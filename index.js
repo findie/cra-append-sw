@@ -25,6 +25,7 @@ program
     "output mode [dev|build|replace]",
     /^(dev|build|replace)$/i
   )
+  .option('-t, --tsconfig [path]', 'path to tsconfig file [./tsconfig.json]', './tsconfig.json')
   .action(function(file) {
     if (program.mode === "dev") {
       process.env.BABEL_ENV = "development";
@@ -58,6 +59,16 @@ function compile(entry) {
     },
     module: {
       rules: [
+        {
+          test: /\.ts?$/,
+          exclude: new RegExp(commonExclude),
+          use: {
+            loader: 'ts-loader',
+            options: {
+              configFile: path.join(process.cwd(), program.tsconfig),
+            },
+          },
+        },
         {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,
