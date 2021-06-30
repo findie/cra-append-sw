@@ -61,7 +61,7 @@ function compile(entry) {
       rules: [
         {
           test: /\.ts?$/,
-          exclude: new RegExp(commonExclude),
+          exclude: /(node_modules|bower_components)/,
           use: {
             loader: 'ts-loader',
             options: {
